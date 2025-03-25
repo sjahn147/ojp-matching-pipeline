@@ -1,0 +1,31 @@
+# PyTorch + CUDA 기반 이미지 사용
+FROM pytorch/pytorch:1.10.0-cuda11.3-cudnn8-runtime
+# Python 3.8 설치 및 기본 python 링크 설정
+RUN apt-get update && apt-get install -y python3.8 python3.8-distutils python3.8-venv
+RUN ln -sf /usr/bin/python3.8 /usr/bin/python
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python
+# 필수 시스템 패키지 설치
+RUN apt-get update && apt-get install -y git gcc g++ make build-essential && rm -rf /var/lib/apt/lists/*
+# PyTorch 및 관련 패키지 재설치 (KoBERT와 호환되는 버전)
+# 여기서는 torch==1.10.1+cu113와 torchaudio==0.10.1+cu113를 설치합니다.
+RUN pip install --no-cache-dir --force-reinstall \
+    torch==1.10.1+cu113 torchaudio==0.10.1+cu113 --extra-index-url https://download.pytorch.org/whl/cu113 \
+    torchvision \
+    pandas numpy transformers torchtext sentencepiece tqdm \
+    onnxruntime==1.12.0 gluonnlp==0.8.0 boto3 scikit-learn
+
+# Flask와 관련 패키지 설치 (API 서버용)
+RUN pip install --no-cache-dir flask==2.0.1 gunicorn requests
+
+# KoBERT 설치
+RUN pip install --no-cache-dir git+https://github.com/SKTBrain/KoBERT.git
+# mxnet 버전 호환
+RUN pip install --no-cache-dir mxnet==1.7.0.post2
+# 작업 디렉토리 설정
+WORKDIR /opt/models
+
+# 필요한 디렉토리 생성
+RUN mkdir -p /opt/models/input /opt/models/output
+
+# 기본 실행 명령 (컨테이너가 계속 실행되도록 tail 명령 사용)
+CMD ["tail", "-f", "/dev/null"]
