@@ -36,6 +36,9 @@
 | API 서버 | Flask, Gunicorn |
 | 언어/라이브러리 | Python, pandas, numpy, PyTorch |
 
+![데이터 파이프라인 흐름도 1](https://github.com/user-attachments/assets/fd59db30-57b4-4338-9b92-e0fff5651253)
+![데이터 파이프라인 흐름도 2](https://github.com/user-attachments/assets/267e91e4-4e0a-4bb6-ac16-f701357edb0d)
+
 ---
 
 ## 🗂 디렉토리 구조 예시
